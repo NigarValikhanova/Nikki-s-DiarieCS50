@@ -1,0 +1,130 @@
+<style>
+    .container {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #343a40;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 12px;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        border-radius: 6px;
+        box-shadow: none;
+        border: 1px solid #ced4da;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        border-color: #007bff;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        transition: background-color 0.3s ease;
+        padding: 10px 15px;
+        border-radius: 6px;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .mb-3 {
+        margin-bottom: 20px;
+    }
+
+    .d-flex {
+        margin-top: 20px;
+    }
+
+    fieldset {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    legend {
+        font-weight: 600;
+        color: #495057;
+    }
+</style>
+
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">{{ languages[current_language]['btn_add_new'] }}</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <form method="POST" action="{{ url_for('add_entry') }}" enctype="multipart/form-data">
+                    <!-- Basic Info Section -->
+                        <fieldset>
+
+                        <!-- Entry Title Input -->
+                            <div class="mb-3">
+                                <label for="title" class="form-label">{{ languages[current_language]['title'] }}</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
+                            </div>
+
+                        <!-- Entry Content Textarea -->
+                            <div class="mb-3">
+                                <label for="content" class="form-label">{{ languages[current_language]['content'] }}</label>
+                                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                            </div>
+                        </fieldset>
+
+                    <!-- Date and Optional Info Section -->
+                        <fieldset>
+
+                        <!-- Entry Date and Time Input -->
+                            <div class="mb-3">
+                                <label for="date_posted" class="form-label">{{ languages[current_language]['date'] }}</label>
+                                <input type="datetime-local" class="form-control" id="date_posted" name="date_posted" required>
+                            </div>
+
+                        <!-- Image Upload Input -->
+                            <div class="mb-3">
+                                <label for="image" class="form-label">{{ languages[current_language]['upload_image'] }}</label>
+                                <input type="file" class="form-control" id="image" name="image">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tags" class="form-label">{{ languages[current_language]['tags'] }}</label>
+                                <input type="text" class="form-control" id="tags" name="tags" value="{{ tags if tags else '' }}">
+                            </div>
+
+                        </fieldset>
+
+                    <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">{{ languages[current_language]['cancel'] }}</a>
+                            <button type="submit" class="btn btn-primary">{{ languages[current_language]['save'] }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

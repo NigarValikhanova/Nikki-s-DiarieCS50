@@ -1,0 +1,198 @@
+<style>
+    .container {
+        max-width: 600px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .banner-profile-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .banner {
+        width: 70%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-picture {
+        width: 25%;
+        margin-left: 10px;
+    }
+
+    img.rounded-circle {
+        border: 4px solid #ffcc00;
+        transition: transform 0.3s ease;
+    }
+
+    img.rounded-circle:hover {
+        transform: scale(1.05);
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-control {
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        border: 1px solid #ced4da;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-control:focus {
+        border-color: #ffcc00;
+        box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+    }
+
+    .btn-primary {
+        background-color: #ff8c00;
+        border: none;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+        background-color: #e67e22;
+        transform: scale(1.03);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 15px;
+        }
+
+        .form-control {
+            padding: 0.6rem;
+        }
+
+        .btn-primary {
+            font-size: 0.9rem;
+            padding: 0.6rem 0.9rem;
+        }
+
+        .banner-profile-wrapper {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .banner {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>
+
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">{{ languages[current_language]['btn_edit_profile'] }}</h2>
+
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="banner-profile-wrapper">
+                    <div class="banner">
+                        {% if user.profile_banner %}
+                            <img src="{{ url_for('static', filename='images/' + user['profile_banner']) }}" alt="Profile Banner" class="banner">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/default.jpeg') }}" alt="Default Profile Banner" class="banner">
+                        {% endif %}
+                    </div>
+
+                    <div class="profile-picture">
+                        {% if user.profile_image %}
+                            <img src="{{ url_for('static', filename='images/' + user['profile_image']) }}" alt="Profile Picture" class="rounded-circle shadow-lg" width="150" height="150">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/default.jpeg') }}" alt="Default Profile Picture" class="rounded-circle shadow-lg" width="150" height="150">
+                        {% endif %}
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
+                <!-- Banner Image Upload -->
+                    <div class="mb-3">
+                        <label for="profile_banner" class="form-label">{{ languages[current_language]['profile_banner'] }}</label>
+                        <input type="file" class="form-control" id="profile_banner" name="profile_banner">
+                    </div>
+
+                <!-- Profile Image Upload -->
+                    <div class="mb-3">
+                        <label for="profile_image" class="form-label">{{ languages[current_language]['profile_image'] }}</label>
+                        <input type="file" class="form-control" id="profile_image" name="profile_image">
+                    </div>
+
+                <!-- Username Input -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">{{ languages[current_language]['username'] }}</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ user['username'] }}" required>
+                    </div>
+
+                <!-- Email Input -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{ languages[current_language]['email_add'] }}</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user['email'] }}" required>
+                    </div>
+
+                <!-- Name Input -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">{{ languages[current_language]['your_name'] }}</label>
+                        <input type="name" class="form-control" id="name" name="name" value="{{ user['name'] }}">
+                    </div>
+
+                <!-- Surname Input -->
+                    <div class="mb-3">
+                        <label for="surname" class="form-label">{{ languages[current_language]['your_surname'] }}</label>
+                        <input type="surname" class="form-control" id="surname" name="surname" value="{{ user['surname'] }}">
+                    </div>
+
+                <!-- Country Input -->
+                    <div class="mb-3">
+                        <label for="country" class="form-label">{{ languages[current_language]['your_country'] }}</label>
+                        <input type="country" class="form-control" id="country" name="country" value="{{ user['country'] }}">
+                    </div>
+
+
+                <!-- City Input -->
+                    <div class="mb-3">
+                        <label for="city" class="form-label">{{ languages[current_language]['your_city'] }}</label>
+                        <input type="city" class="form-control" id="city" name="city" value="{{ user['city'] }}">
+                    </div>
+
+                <!-- Password Input -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">{{ languages[current_language]['new_pass'] }}</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter new password">
+                    </div>
+
+                <!-- Confirm Password Input -->
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">{{ languages[current_language]['confirm_pass'] }}</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm new password">
+                    </div>
+
+                <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary w-100">{{ languages[current_language]['btn_update_profile'] }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

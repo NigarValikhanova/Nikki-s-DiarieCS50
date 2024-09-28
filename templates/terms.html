@@ -1,0 +1,70 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+    }
+
+    h1,
+    h2 {
+        color: #333;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+
+    p {
+        margin-bottom: 15px;
+    }
+</style>
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>{{ languages[current_language]['terms_title'] }}</h1>
+    <p><strong>{{ languages[current_language]['last_updated'] }}</strong></p>
+
+    <h2>{{ languages[current_language]['acceptance_of_terms'] }}</h2>
+    <p>{{ languages[current_language]['acceptance_text'] }}</p>
+
+    <h2>{{ languages[current_language]['changes_to_terms'] }}</h2>
+    <p>{{ languages[current_language]['changes_text'] }}</p>
+
+    <h2>{{ languages[current_language]['user_accounts'] }}</h2>
+    <p>{{ languages[current_language]['user_accounts_text'] }}</p>
+
+    <h2>{{ languages[current_language]['user_conduct'] }}</h2>
+    <p>{{ languages[current_language]['user_conduct_text'] }}</p>
+    <ul>
+        {% for rule in languages[current_language]['user_conduct_bullets'] %}
+            <li>{{ rule }}</li>
+        {% endfor %}
+    </ul>
+    <p>{{ languages[current_language]['user_conduct_termination'] }}</p>
+
+    <h2>{{ languages[current_language]['intellectual_property'] }}</h2>
+    <p>{{ languages[current_language]['intellectual_property_text'] }}</p>
+
+    <h2>{{ languages[current_language]['third_party_links'] }}</h2>
+    <p>{{ languages[current_language]['third_party_links_text'] }}</p>
+
+    <h2>{{ languages[current_language]['liability'] }}</h2>
+    <p>{{ languages[current_language]['liability_text'] }}</p>
+
+    <h2>{{ languages[current_language]['termination'] }}</h2>
+    <p>{{ languages[current_language]['termination_text'] }}</p>
+
+    <h2>{{ languages[current_language]['governing_law'] }}</h2>
+    <p>{{ languages[current_language]['governing_law_text'] }}</p>
+
+    <h2>{{ languages[current_language]['contact_info'] }}</h2>
+    <p>{{ languages[current_language]['contact_info_text'] }}</p>
+{% endblock %}

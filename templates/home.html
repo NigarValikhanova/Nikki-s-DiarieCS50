@@ -1,0 +1,55 @@
+<style>
+    .text-orange {
+        color: #ff8c00;
+    }
+
+    h1.display-4 {
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #ff8c00;
+        border-color: #ff8c00;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #e67e22;
+    }
+
+    .btn-outline-secondary {
+        color: #ff8c00;
+        border-color: #ff8c00;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #ff8c00;
+        color: white;
+    }
+
+    .img-fluid {
+        border-radius: 10px;
+    }
+
+    .shadow {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container text-center mt-5">
+        <h1 class="display-4 text-orange">{{ languages[current_language]['greeting'] }}</h1>
+        <p class="lead text">{{ languages[current_language]['greeting2'] }}</p>
+
+        <div class="mt-4">
+            {% if logged_in %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-warning btn-lg mx-2">{{ languages[current_language]['dashboard'] }}</a>
+            {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-outline-warning btn-lg mx-2">{{ languages[current_language]['started'] }}</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-warning btn-lg mx-2">{{ languages[current_language]['login'] }}</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

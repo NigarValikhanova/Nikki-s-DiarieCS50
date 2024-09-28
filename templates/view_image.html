@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <style>
+        .image-viewer-container {
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .image-viewer img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-date {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .back-button,
+        .delete-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button {
+            background-color: #ff6200;
+            color: white;
+        }
+
+        .back-button:hover {
+            background-color: #e55d00;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+
+    <div class="image-viewer-container">
+        <h1>{{ languages[current_language]['image_viewer'] }}</h1>
+        <div class="image-viewer">
+            <img src="{{ url_for('static', filename='images/gallery/' + image['image_path']) }}" alt="Viewed Image">
+        </div>
+        <p class="upload-date">{{ languages[current_language]['uploaded_on'] }}: {{ image['upload_date'] }}</p>
+        <a href="{{ url_for('gallery') }}" class="back-button">{{ languages[current_language]['back_gallery'] }}</a>
+
+    <!-- Delete button form -->
+        <form action="{{ url_for('delete_image', image_id=image['id']) }}" method="POST" style="display:inline;">
+            <button type="submit" class="delete-button" onclick="return confirm('Are you sure to delete this image');">{{ languages[current_language]['btn_delete_img'] }}</button>
+        </form>
+    </div>
+{% endblock %}

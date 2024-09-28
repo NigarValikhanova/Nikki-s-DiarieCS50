@@ -1,0 +1,165 @@
+<style>
+    .card {
+        margin-bottom: 1.5rem;
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+        max-height: 220px;
+        object-fit: cover;
+        width: 100%;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+
+    .card-title {
+        font-weight: 700;
+        color: #222;
+    }
+
+    .dark-mode .card-title {
+        color: #000;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #444;
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+        border-radius: 0.6rem;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+        text-transform: uppercase;
+    }
+
+    .btn-primary {
+        background-color: #0069d9;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0052a5;
+        transform: scale(1.1);
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border: none;
+    }
+
+    .btn-warning:hover {
+        background-color: #d39e00;
+        transform: scale(1.1);
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #b21f2d;
+        transform: scale(1.1);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+        transform: scale(1.1);
+    }
+
+    .badge {
+        background-color: #007bff;
+        color: #fff;
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        border-radius: 0.4rem;
+    }
+
+    .badge.bg-secondary {
+        background-color: #6c757d;
+    }
+
+    small.text-muted {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .card {
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+        }
+    }
+</style>
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h2 class="text-center">{{ languages[current_language]['dash_entry'] }}</h2>
+        <a href="{{ url_for('add_entry') }}" class="btn btn-success mb-3">{{ languages[current_language]['btn_add_new'] }}</a>
+
+        {% if entries %}
+            <div class="row">
+                {% for entry in entries %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            {% if entry.image_path %}
+                                <img src="{{ url_for('static', filename='images/' ~ entry.image_path) }}" class="card-img-top" alt="Entry Image">
+                            {% endif %}
+
+                            <div class="card-body">
+                                <h5 class="card-title">{{ entry.title }}</h5>
+                                <p class="card-text">{{ entry.content[:120] }}...</p>
+                                <p class="card-text">
+                                    <strong>Tags:</strong>
+                                    {% for tag in entry_tags[entry.id] %}
+                                        <span class="badge bg-secondary">{{ tag }}</span>
+                                    {% else %}
+                                        <span class="text-muted">{{ languages[current_language]['no_tags'] }}</span>
+                                    {% endfor %}
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <a href="{{ url_for('view_entry', entry_id=entry.id) }}" class="btn btn-primary">{{ languages[current_language]['btn_view'] }}</a>
+                                    <a href="{{ url_for('edit_entry', entry_id=entry.id) }}" class="btn btn-warning">{{ languages[current_language]['btn_edit'] }}</a>
+                                    <form action="{{ url_for('delete_entry', entry_id=entry.id) }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('{{languages[current_language]['delete_code']}}');">{{ languages[current_language]['btn_delete'] }}</button>
+                                    </form>
+                                </div>
+                                <small class="text-muted">{{ languages[current_language]['posted_on'] }}: {{ entry.date_posted }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                {{ languages[current_language]['start_writing'] }}
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

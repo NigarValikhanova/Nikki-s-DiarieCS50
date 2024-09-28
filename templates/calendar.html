@@ -1,0 +1,148 @@
+<style>
+    .calendar {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        text-align: center;
+        width: 50px;
+        height: 50px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .has-entry {
+        background-color: #88cc88;
+        color: white;
+        font-weight: bold;
+    }
+
+    .controls {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .controls button {
+        padding: 5px 10px;
+        margin: 0 10px;
+        width: 100px;
+    }
+
+    .month-year {
+        font-size: 1.5em;
+        min-width: 200px;
+        text-align: center;
+    }
+
+    .today {
+        border: 1px solid #000;
+    }
+</style>
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="container mt-5"></div>
+    <div class="calendar">
+        <div class="controls">
+            <button id="prev-month">{{ languages[current_language]['prev'] }}</button>
+            <span id="month-year" class="month-year"></span>
+            <button id="next-month">{{ languages[current_language]['next'] }}</button>
+        </div>
+        <table id="calendar-table">
+            <thead>
+                <tr>
+                    <th>{{ languages[current_language]['sun'] }}</th>
+                    <th>{{ languages[current_language]['mon'] }}</th>
+                    <th>{{ languages[current_language]['tue'] }}</th>
+                    <th>{{ languages[current_language]['wed'] }}</th>
+                    <th>{{ languages[current_language]['thu'] }}</th>
+                    <th>{{ languages[current_language]['fri'] }}</th>
+                    <th>{{ languages[current_language]['sat'] }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- Calendar will be generated here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const diaryEntries = {{ entries | tojson }};
+        const monthNames = ["{{ languages[current_language]['jan'] }}", "{{ languages[current_language]['feb'] }}", "{{ languages[current_language]['mar'] }}", "{{ languages[current_language]['apr'] }}", "{{ languages[current_language]['may'] }}", "{{ languages[current_language]['jun'] }}", "{{ languages[current_language]['jul'] }}", "{{ languages[current_language]['aug'] }}", "{{ languages[current_language]['sep'] }}", "{{ languages[current_language]['oct'] }}", "{{ languages[current_language]['nov'] }}", "{{ languages[current_language]['dec'] }}"];
+
+        let currentDate = new Date();
+
+    // Function to generate the calendar
+        function generateCalendar(month, year) {
+            const calendarTable = document.querySelector('#calendar-table tbody');
+            calendarTable.innerHTML = '';
+
+            const firstDay = new Date(year, month).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            const today = new Date();
+            const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+
+            document.getElementById('month-year').textContent = `${monthNames[month]} ${year}`;
+
+            let date = 1;
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement('tr');
+
+                for (let j = 0; j < 7; j++) {
+                    const cell = document.createElement('td');
+
+                    if (i === 0 && j < firstDay) {
+                        cell.textContent = '';
+                    } else if (date > daysInMonth) {
+                        break;
+                    } else {
+                        cell.textContent = date;
+
+                        const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                        if (diaryEntries.includes(formattedDate)) {
+                            cell.classList.add('has-entry');
+                        }
+
+                    // Highlight today's date
+                        if (isCurrentMonth && date === today.getDate()) {
+                            cell.classList.add('today');
+                        }
+
+                        date++;
+                    }
+                    row.appendChild(cell);
+                }
+                calendarTable.appendChild(row);
+            }
+        }
+
+    // Event listeners for navigation buttons
+        document.getElementById('prev-month').addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar(currentDate.getMonth(), currentDate.getFullYear());
+        });
+
+        document.getElementById('next-month').addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar(currentDate.getMonth(), currentDate.getFullYear());
+        });
+
+    // Generate initial calendar
+        generateCalendar(currentDate.getMonth(), currentDate.getFullYear());
+    </script>
+
+{% endblock %}

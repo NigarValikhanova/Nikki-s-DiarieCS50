@@ -1,0 +1,75 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+    }
+
+    h1,
+    h2 {
+        color: #333;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+
+    p {
+        margin-bottom: 15px;
+    }
+</style>
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>{{ languages[current_language]['privacy'] }}</h1>
+    <p><strong>{{ languages[current_language]['last_updated'] }}: 9/23/2024</strong></p>
+
+    <p>{{ languages[current_language]['intro'] }}</p>
+
+    <h2>1. {{ languages[current_language]['information_we_collect'] }}</h2>
+    <p>{{ languages[current_language]['types_of_information'] }}</p>
+    <ul>
+        <li>{{ languages[current_language]['personal_data'] }}</li>
+        <li>{{ languages[current_language]['usage_data'] }}</li>
+    </ul>
+
+    <h2>2. {{ languages[current_language]['how_we_use'] }}</h2>
+    <p>{{ languages[current_language]['use_purposes'] }}</p>
+    <ul>
+        <li>{{ languages[current_language]['operate_service'] }}</li>
+        <li>{{ languages[current_language]['customer_support'] }}</li>
+        <li>{{ languages[current_language]['updates'] }}</li>
+        <li>{{ languages[current_language]['data_analysis'] }}</li>
+    </ul>
+
+    <h2>3. {{ languages[current_language]['data_sharing'] }}</h2>
+    <p>{{ languages[current_language]['no_sharing'] }}</p>
+    <ul>
+        <li>{{ languages[current_language]['legal_obligations'] }}</li>
+        <li>{{ languages[current_language]['protect_rights'] }}</li>
+    </ul>
+
+    <h2>4. {{ languages[current_language]['data_security'] }}</h2>
+    <p>{{ languages[current_language]['reasonable_steps'] }}</p>
+
+    <h2>5. {{ languages[current_language]['cookies'] }}</h2>
+    <p>{{ languages[current_language]['cookie_usage'] }}</p>
+
+    <h2>6. {{ languages[current_language]['your_rights'] }}</h2>
+    <p>{{ languages[current_language]['access_update_delete'] }}</p>
+
+    <h2>7. {{ languages[current_language]['changes_to_policy'] }}</h2>
+    <p>{{ languages[current_language]['notify_changes'] }}</p>
+
+    <h2>8. {{ languages[current_language]['contact_us'] }}</h2>
+    <p>{{ languages[current_language]['questions_contact'] }}</p>
+
+{% endblock %}

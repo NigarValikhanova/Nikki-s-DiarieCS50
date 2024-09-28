@@ -1,0 +1,104 @@
+<style>
+    /* Styling for the tags */
+    .badge {
+        font-size: 0.85rem;
+        margin-right: 0.5rem;
+    }
+
+    .card {
+        border-radius: 10px;
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Styling for buttons */
+    .btn-primary,
+    .btn-warning,
+    .btn-danger {
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+    }
+
+    .img-fluid {
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    /* Tag Styling */
+    .tag-badge {
+        display: inline-block;
+        background-color: #6c757d;
+        color: white;
+        padding: 0.3rem 0.75rem;
+        margin: 0.2rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        text-transform: capitalize;
+        white-space: nowrap;
+    }
+</style>
+
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+            <!-- Card for Entry Details -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                    <!-- Entry Title -->
+                        <h2 class="text-center card-title">{{ entry.title }}</h2>
+
+                    <!-- Entry Image (if available) -->
+                        {% if entry.image_path %}
+                            <div class="text-center mb-3">
+                                <img src="{{ url_for('static', filename='images/' ~ entry.image_path) }}" class="img-fluid rounded" alt="Entry Image" style="max-height: 400px; object-fit: cover;">
+                            </div>
+                        {% endif %}
+
+                    <!-- Entry Content -->
+                        <p class="card-text">{{ entry.content }}</p>
+
+                    <!-- Tags Section -->
+                        <div class="mb-3">
+                            <div>
+                                <div>
+                                    <strong>{{ languages[current_language]['view_tags'] }}:</strong>
+                                    {% for tag in tags %}
+                                        <span class="tag-badge">{{ tag }}</span>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                        </div>
+
+                    <!-- Date and Time -->
+                        <small class="text-muted">{{ languages[current_language]['posted_on'] }}: {{ entry.date_posted }}</small>
+
+                    <!-- Action Buttons -->
+                        <div class="mt-4 d-flex justify-content-between">
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">{{ languages[current_language]['btn_back_dashboard'] }}</a>
+                            <div>
+                                <a href="{{ url_for('edit_entry', entry_id=entry.id) }}" class="btn btn-warning">{{ languages[current_language]['btn_edit'] }}</a>
+                                <form action="{{ url_for('delete_entry', entry_id=entry.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this entry?');">{{ languages[current_language]['btn_delete'] }}</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
